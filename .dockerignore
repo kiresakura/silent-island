@@ -1,0 +1,8 @@
+venv/
+__pycache__/
+*.pyc
+client-react/node_modules/
+client-react/.next/
+client-react/out/
+.git/
+.DS_Store
