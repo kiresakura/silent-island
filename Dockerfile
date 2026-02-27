@@ -13,4 +13,4 @@ COPY server/ server/
 COPY client/ client/
 COPY --from=react-build /build/out client-react/out/
 EXPOSE 8001
-CMD ["uvicorn", "server.main:app", "--host", "0.0.0.0", "--port", "8001"]
+CMD uvicorn server.main:app --host 0.0.0.0 --port ${PORT:-8001}
