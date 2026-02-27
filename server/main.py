@@ -332,22 +332,26 @@ async def websocket_endpoint(ws: WebSocket):
                 )
                 await broadcast_all(room, {
                     "type": "silence_countdown",
-                    "seconds": 30,
+                    "seconds": 5,
                     "atmosphere": atmosphere,
                     "host_guidance": guidance,
                 })
 
-            # ── 開始討論 ──
+            # ── 開始討論（已停用，直接跳過） ──
             elif msg_type == "start_discussion":
                 if role != "host" or not room:
                     continue
-                room.engine.state.phase = GamePhase.DISCUSSION
+                # 跳過討論，直接進入投票
+                room.engine.state.phase = GamePhase.VOTING
+                atmosphere = room.engine.get_waiting_atmosphere("pre_voting")
                 guidance = room.engine.get_host_guidance(
-                    room.engine.state.current_event, "discussion"
+                    room.engine.state.current_event, "voting_open"
                 )
                 await broadcast_all(room, {
-                    "type": "discussion_start",
-                    "seconds": 120,
+                    "type": "voting_open",
+                    "seconds": 30,
+                    "public_voting": room.engine.state.public_voting,
+                    "atmosphere": atmosphere,
                     "host_guidance": guidance,
                 })
 
