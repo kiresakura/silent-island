@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>靜默之島：選擇與代價</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>靜默之島</h1>
+            <p class="subtitle">選擇與代價</p>
+        </div>
+
+        <div class="card" style="margin-top: 2rem;">
+            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.8;">
+                白色恐怖情境模擬遊戲<br>
+                <span style="font-size: 0.85rem; color: var(--text-dim);">6-8 人 ・ 6 回合 ・ 高壓社會中的道德兩難與集體決策</span>
+            </p>
+
+            <a href="/host" class="btn btn-primary" style="display: block; text-decoration: none; margin-bottom: 0.8rem;">
+                建立房間（關主）
+            </a>
+
+            <hr class="divider">
+
+            <div class="input-group">
+                <label>房間碼</label>
+                <input type="text" id="room-code-input" placeholder="輸入 4 位數房間碼" maxlength="4" inputmode="numeric" pattern="[0-9]*">
+            </div>
+            <div class="input-group">
+                <label>你的名字</label>
+                <input type="text" id="player-name-input" placeholder="輸入名字" maxlength="10">
+            </div>
+            <button class="btn" id="join-btn" onclick="joinRoom()">加入房間</button>
+        </div>
+
+        <p class="text-center text-dim" style="font-size: 0.75rem; margin-top: 2rem;">
+            靜默之島 v2.0 — 請在同一個網路環境下遊玩
+        </p>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        function joinRoom() {
+            const code = document.getElementById('room-code-input').value.trim();
+            const name = document.getElementById('player-name-input').value.trim();
+
+            if (!code || code.length !== 4) {
+                showToast('請輸入 4 位數房間碼');
+                return;
+            }
+            if (!name) {
+                showToast('請輸入名字');
+                return;
+            }
+
+            window.location.href = `/player?room=${code}&name=${encodeURIComponent(name)}`;
+        }
+
+        document.getElementById('player-name-input').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') joinRoom();
+        });
+        document.getElementById('room-code-input').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') document.getElementById('player-name-input').focus();
+        });
+    </script>
+</body>
+</html>

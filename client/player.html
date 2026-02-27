@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>靜默之島：選擇與代價</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 等待加入 -->
+        <div id="join-phase">
+            <div class="header">
+                <h1>靜默之島</h1>
+                <p class="subtitle">選擇與代價</p>
+            </div>
+            <div class="card text-center">
+                <p id="join-status">正在連線...</p>
+            </div>
+        </div>
+
+        <!-- 等待遊戲開始 -->
+        <div id="lobby-phase" class="hidden">
+            <div class="header">
+                <h1>靜默之島</h1>
+                <p class="subtitle">等待遊戲開始</p>
+            </div>
+            <div class="card text-center">
+                <p>你已加入房間 <strong id="lobby-room-code"></strong></p>
+                <p class="mt-1">玩家：<strong id="lobby-player-name"></strong></p>
+                <p class="mt-2 text-dim">等待關主開始遊戲...</p>
+                <p class="mt-1 text-dim">目前 <span id="lobby-player-count">0</span> 人</p>
+            </div>
+        </div>
+
+        <!-- 遊戲進行中 — 全螢幕視口 -->
+        <div id="game-phase" class="hidden game-viewport">
+            <!-- 觀察者 banner -->
+            <div id="observer-banner" class="observer-banner">
+                👁️ 觀察者模式 — 你可以繼續觀看，但無法參與行動
+            </div>
+
+            <!-- 精簡狀態列 -->
+            <div class="status-bar-compact" id="status-bar-compact">
+                <span class="sbc-item">恐懼 <strong class="fear" id="player-fear">0</strong></span>
+                <span class="sbc-sep">|</span>
+                <span class="sbc-item">流通 <strong class="flow" id="player-flow">0</strong></span>
+                <span class="sbc-sep">|</span>
+                <span class="sbc-item">風險 <strong class="risk" id="player-risk">0</strong></span>
+            </div>
+
+            <!-- 子畫面容器 -->
+            <div class="game-screens-container">
+
+                <!-- 事件畫面 -->
+                <div id="game-screen-event" class="game-screen hidden">
+                    <div class="screen-content screen-content-center">
+                        <div class="event-number" id="event-number"></div>
+                        <div class="event-title" id="event-title"></div>
+                        <div class="event-desc" id="event-desc"></div>
+                    </div>
+                </div>
+
+                <!-- 討論畫面 -->
+                <div id="game-screen-discussion" class="game-screen hidden">
+                    <div class="screen-content screen-content-center">
+                        <div class="timer-label">🗣️ 討論時間</div>
+                        <div class="timer-text" id="discussion-timer-text">2:00</div>
+                        <div class="timer-label">放下手機，面對面交談</div>
+                    </div>
+                </div>
+
+                <!-- 投票畫面 -->
+                <div id="game-screen-voting" class="game-screen hidden">
+                    <div class="screen-content screen-content-between">
+                        <div>
+                            <div id="public-vote-badge" class="public-vote-badge hidden">⚠ 公開投票</div>
+                            <div id="vote-timer-area" class="vote-timer-area hidden">
+                                <div class="vote-timer" id="vote-timer">剩餘 30 秒</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="vote-choices" id="vote-choices"></div>
+                            <p id="vote-lock-msg" class="text-center text-dim mt-1 hidden">你的選擇已鎖定</p>
+                        </div>
+                        <div id="public-votes-area" class="hidden">
+                            <ul class="player-list" id="public-votes-list"></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 結算畫面 -->
+                <div id="game-screen-result" class="game-screen hidden">
+                    <div class="screen-content">
+                        <h3 class="screen-title">回合結算</h3>
+                        <div class="screen-scroll-area" id="result-content"></div>
+                    </div>
+                </div>
+
+                <!-- 伏筆結算畫面 -->
+                <div id="game-screen-foreshadow" class="game-screen hidden">
+                    <div class="screen-content">
+                        <h3 class="screen-title text-red">⚠ 舊事被翻出</h3>
+                        <div class="screen-scroll-area" id="foreshadow-content"></div>
+                    </div>
+                </div>
+
+                <!-- 等待畫面 -->
+                <div id="game-screen-waiting" class="game-screen hidden">
+                    <div class="screen-content screen-content-center">
+                        <p id="waiting-msg">等待中...</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- FAB 按鈕 -->
+            <div class="fab-group" id="fab-group">
+                <button class="fab" id="fab-role" onclick="toggleRolePanel()">角色</button>
+                <button class="fab" id="fab-note" onclick="openNoteModal()">紙條<span class="fab-badge" id="note-badge-fab">3</span></button>
+            </div>
+
+            <!-- 角色卡底部抽屜 -->
+            <div id="role-sheet" class="bottom-sheet hidden">
+                <div class="bottom-sheet-backdrop" onclick="toggleRolePanel()"></div>
+                <div class="bottom-sheet-content">
+                    <div class="sheet-handle"></div>
+                    <div class="role-name" id="role-name"></div>
+                    <div class="role-passive" id="role-passive"></div>
+                    <div class="role-ability" id="role-ability"></div>
+                    <button class="ability-btn" id="ability-btn" onclick="useAbility()">使用能力</button>
+                </div>
+            </div>
+
+            <!-- 氛圍文字 -->
+            <div id="player-atmosphere-area" class="atmosphere-floating hidden">
+                <p id="player-atmosphere-text" class="atmosphere-text"></p>
+            </div>
+        </div>
+
+        <!-- 沉默倒數（事件前） -->
+        <div id="silence-overlay" class="silence-overlay hidden">
+            <div class="countdown-label">沉默</div>
+            <div class="countdown-number" id="countdown-number">30</div>
+            <div class="countdown-label" style="margin-top: 2rem; font-size: 0.9rem; color: #333;">請保持沉默</div>
+            <div class="silence-atmosphere" id="silence-atmosphere"></div>
+        </div>
+
+        <!-- 強制沉默倒數（結算後） -->
+        <div id="post-silence-overlay" class="silence-overlay hidden">
+            <div class="countdown-label">強制沉默</div>
+            <div class="countdown-number" id="post-silence-number">30</div>
+            <div class="countdown-label" style="margin-top: 2rem; font-size: 0.9rem; color: #333;">消化剛才的結果</div>
+        </div>
+
+        <!-- 被帶走 overlay（其他玩家看到） -->
+        <div id="taken-away-overlay" class="taken-away-overlay hidden">
+            <div class="taken-away-text" id="taken-away-text"></div>
+        </div>
+
+        <!-- 你自己被帶走的特殊畫面 -->
+        <div id="you-taken-overlay" class="you-taken-overlay hidden">
+            <div class="you-taken-text">你被帶走了。一切結束了。</div>
+        </div>
+
+        <!-- 擲幣全屏動畫 -->
+        <div id="coin-flip-overlay" class="coin-flip-overlay hidden">
+            <div class="coin-3d-container">
+                <div class="coin-3d" id="coin-3d">
+                    <div class="coin-face coin-front">正</div>
+                    <div class="coin-face coin-back">反</div>
+                </div>
+            </div>
+            <div class="coin-result-text" id="coin-result-text"></div>
+        </div>
+
+        <!-- 匿名紙條收到通知 -->
+        <div id="note-received-overlay" class="note-overlay hidden">
+            <div class="note-content">
+                <div class="note-icon">📜</div>
+                <p class="note-label">你收到了一張匿名紙條：</p>
+                <p class="note-text" id="note-received-text"></p>
+                <input type="text" id="note-reply-input" class="hidden" placeholder="回覆（最多 100 字）" maxlength="100" style="margin-top:0.5rem;width:100%;padding:0.5rem;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:4px;color:#fff;font-size:0.85rem;">
+                <div style="display:flex;gap:0.5rem;margin-top:0.5rem;">
+                    <button class="btn btn-small" id="note-reply-btn" onclick="showReplyInput()" style="flex:1;">回覆</button>
+                    <button class="btn btn-small" onclick="hide('note-received-overlay')" style="flex:1;">收下</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 結局 -->
+        <div id="ending-overlay" class="ending-overlay hidden">
+            <div class="ending-text" id="ending-display"></div>
+        </div>
+    </div>
+
+    <!-- 目標選擇 Modal -->
+    <div id="target-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3>選擇目標玩家</h3>
+            <div id="target-list"></div>
+            <button class="btn btn-small mt-1" onclick="closeTargetModal()">取消</button>
+        </div>
+    </div>
+
+    <!-- 紙條發送 Modal -->
+    <div id="note-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3>📜 傳匿名紙條</h3>
+            <p class="text-dim mb-1">剩餘 <span id="note-remaining">3</span> 次（每場限 3 次）</p>
+            <div id="note-target-list" class="mb-1"></div>
+            <div class="input-group">
+                <label>紙條內容（最多 100 字）</label>
+                <input type="text" id="note-input" placeholder="寫下你想說的話..." maxlength="100">
+            </div>
+            <div class="note-char-count"><span id="note-char-count">0</span>/100</div>
+            <button class="btn btn-primary btn-small mt-1" id="note-send-btn" onclick="sendNote()" disabled>發送紙條</button>
+            <button class="btn btn-small mt-1" onclick="closeNoteModal()">取消</button>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="/static/js/ws.js"></script>
+    <script src="/static/js/audio.js"></script>
+    <script src="/static/js/player.js"></script>
+</body>
+</html>
