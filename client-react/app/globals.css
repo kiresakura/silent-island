@@ -1,0 +1,177 @@
+@import 'tailwindcss';
+
+:root {
+  --background: #0a0a0a;
+  --foreground: #e0e0e0;
+  --card: #1a1a1a;
+  --card-foreground: #e0e0e0;
+  --popover: #1a1a1a;
+  --popover-foreground: #e0e0e0;
+  --primary: #8b1a1a;
+  --primary-foreground: #e0e0e0;
+  --secondary: #2a2a2a;
+  --secondary-foreground: #888888;
+  --muted: #2a2a2a;
+  --muted-foreground: #555555;
+  --accent: #8b1a1a;
+  --accent-foreground: #e0e0e0;
+  --destructive: #c0392b;
+  --destructive-foreground: #e0e0e0;
+  --border: #2a2a2a;
+  --input: #2a2a2a;
+  --ring: #8b1a1a;
+  --radius: 0.5rem;
+
+  --crimson: #8b1a1a;
+  --crimson-light: #c0392b;
+  --teal: #44aa99;
+  --amber: #d4a017;
+  --dim: #555555;
+  --text-secondary: #888888;
+}
+
+@theme inline {
+  --font-sans: 'Noto Sans TC', sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-crimson: var(--crimson);
+  --color-crimson-light: var(--crimson-light);
+  --color-teal: var(--teal);
+  --color-amber: var(--amber);
+  --color-dim: var(--dim);
+  --color-text-secondary: var(--text-secondary);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom thin scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 2px;
+}
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #333 transparent;
+}
+
+/* Noise texture overlay */
+.noise-bg::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Fear-reactive theme levels */
+.fear-0, .fear-1 {
+  background-color: #0a0a0a;
+}
+.fear-2, .fear-3 {
+  background-color: #0e0808;
+}
+.fear-2 .fear-border, .fear-3 .fear-border {
+  border-color: #3a1515;
+}
+.fear-4, .fear-5 {
+  background-color: #0c0606;
+}
+.fear-4 .fear-border, .fear-5 .fear-border {
+  border-color: #5a1a1a;
+  animation: pulse-crimson 3s ease-in-out infinite;
+}
+.fear-6 {
+  background-color: #0a0404;
+}
+.fear-6 .fear-border {
+  border-color: #8b1a1a;
+  animation: pulse-crimson-intense 2s ease-in-out infinite;
+}
+.fear-6 .fear-flicker {
+  animation: text-flicker 4s ease-in-out infinite;
+}
+
+@keyframes pulse-crimson {
+  0%, 100% { box-shadow: 0 0 4px rgba(139,26,26,0.2); }
+  50% { box-shadow: 0 0 16px rgba(139,26,26,0.5); }
+}
+
+@keyframes pulse-crimson-intense {
+  0%, 100% { box-shadow: 0 0 8px rgba(192,57,43,0.3); }
+  50% { box-shadow: 0 0 24px rgba(192,57,43,0.7); }
+}
+
+@keyframes text-flicker {
+  0%, 95%, 100% { opacity: 1; }
+  96% { opacity: 0.4; }
+  97% { opacity: 1; }
+  98% { opacity: 0.6; }
+}
+
+@keyframes breathing {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10% { transform: translateX(-5px); }
+  30% { transform: translateX(5px); }
+  50% { transform: translateX(-5px); }
+  70% { transform: translateX(5px); }
+  90% { transform: translateX(-3px); }
+}
+
+/* Vignette effect */
+.vignette-red {
+  box-shadow: inset 0 0 120px 60px rgba(139,26,26,0.7);
+}
+
+/* Coin flip */
+@keyframes coin-flip-3d {
+  0% { transform: perspective(400px) rotateY(0deg) translateY(0); }
+  40% { transform: perspective(400px) rotateY(1080deg) translateY(-80px); }
+  60% { transform: perspective(400px) rotateY(1440deg) translateY(-20px); }
+  80% { transform: perspective(400px) rotateY(1620deg) translateY(10px); }
+  100% { transform: perspective(400px) rotateY(1800deg) translateY(0); }
+}
+.coin-flip {
+  animation: coin-flip-3d 1.5s ease-out forwards;
+}

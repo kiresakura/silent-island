@@ -1,0 +1,2110 @@
+/* ══════════════════════════════════════════════════════
+   靜默之島：選擇與代價 v2.0 — 樣式
+   ══════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+
+/* ── Reset & Base ─────────────────────────────────── */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #141414;
+    --bg-card: #1a1a1a;
+    --bg-card-hover: #222;
+    --text-primary: #e0e0e0;
+    --text-secondary: #888;
+    --text-dim: #555;
+    --accent-red: #8b1a1a;
+    --accent-red-light: #c0392b;
+    --accent-red-dim: #4a1010;
+    --border-color: #2a2a2a;
+    --border-light: #333;
+    --success: #2d6a4f;
+    --warning: #b8860b;
+    --danger: #8b1a1a;
+    --font: 'Noto Sans TC', sans-serif;
+}
+
+html, body {
+    height: 100%;
+    font-family: var(--font);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* ── Typography ───────────────────────────────────── */
+h1, h2, h3 {
+    font-weight: 500;
+    letter-spacing: 0.05em;
+}
+
+h1 {
+    font-size: 1.8rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+h2 {
+    font-size: 1.3rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+h3 {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+p {
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+/* ── Container ────────────────────────────────────── */
+.container {
+    width: 100%;
+    max-width: 480px;
+    padding: 2rem 1.5rem;
+    margin: 0 auto;
+}
+
+.container-wide {
+    max-width: 800px;
+}
+
+/* ── Header ───────────────────────────────────────── */
+.header {
+    text-align: center;
+    padding: 2rem 0 1rem;
+}
+
+.header .subtitle {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    font-weight: 300;
+    letter-spacing: 0.2em;
+}
+
+/* ── Cards ────────────────────────────────────────── */
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.card-dark {
+    background: var(--bg-secondary);
+}
+
+/* ── Buttons ──────────────────────────────────────── */
+.btn {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    font-family: var(--font);
+    font-size: 1rem;
+    font-weight: 500;
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    background: var(--bg-card);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    letter-spacing: 0.05em;
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.btn:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--text-dim);
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-primary {
+    background: var(--accent-red-dim);
+    border-color: var(--accent-red);
+    color: #ddd;
+}
+
+.btn-primary:hover {
+    background: var(--accent-red);
+}
+
+.btn-danger {
+    background: var(--danger);
+    border-color: var(--accent-red-light);
+}
+
+.btn-danger:hover {
+    background: var(--accent-red-light);
+}
+
+.btn-small {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    width: auto;
+}
+
+.btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn.selected {
+    background: var(--accent-red);
+    border-color: var(--accent-red-light);
+    color: #fff;
+}
+
+/* ── Input ────────────────────────────────────────── */
+.input-group {
+    margin-bottom: 1rem;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.05em;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    font-family: var(--font);
+    font-size: 1rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+    border-color: var(--accent-red);
+}
+
+.input-group input::placeholder {
+    color: var(--text-dim);
+}
+
+/* ── Vote Buttons ─────────────────────────────────── */
+.vote-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-top: 1rem;
+}
+
+.vote-btn {
+    padding: 1.2rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border: 2px solid var(--border-light);
+    border-radius: 8px;
+    background: var(--bg-card);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.vote-btn:hover:not(:disabled) {
+    border-color: var(--accent-red);
+    background: var(--accent-red-dim);
+}
+
+.vote-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.vote-btn.voted {
+    background: var(--accent-red);
+    border-color: var(--accent-red-light);
+    color: #fff;
+    cursor: default;
+}
+
+.vote-btn.locked {
+    opacity: 0.5;
+    cursor: default;
+}
+
+/* ── Vote Timer ───────────────────────────────────── */
+.vote-timer-area {
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.vote-timer {
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--warning);
+    padding: 0.3rem 1rem;
+    border: 1px solid var(--warning);
+    border-radius: 4px;
+    font-variant-numeric: tabular-nums;
+}
+
+.vote-timer.timer-urgent {
+    color: var(--accent-red-light);
+    border-color: var(--accent-red-light);
+    animation: pulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+    from { opacity: 1; }
+    to { opacity: 0.5; }
+}
+
+/* ── Host Timer ───────────────────────────────────── */
+.host-timer {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--warning);
+    min-height: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ── Silence Countdown ────────────────────────────── */
+.silence-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.silence-overlay .countdown-number {
+    font-size: 8rem;
+    font-weight: 700;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+
+.silence-overlay .countdown-label {
+    font-size: 1.2rem;
+    color: #555;
+    margin-top: 1rem;
+    letter-spacing: 0.3em;
+}
+
+/* ── Status Bar ───────────────────────────────────── */
+.status-bar {
+    display: flex;
+    gap: 1rem;
+    padding: 0.8rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    margin-bottom: 1rem;
+}
+
+.status-item {
+    flex: 1;
+    text-align: center;
+}
+
+.status-item .label {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+}
+
+.status-item .value {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.status-item .value.fear {
+    color: var(--accent-red-light);
+}
+
+.status-item .value.flow {
+    color: #4a9;
+}
+
+.status-item .value.risk {
+    color: var(--warning);
+}
+
+.status-item .value.risk-critical {
+    color: var(--accent-red-light);
+    animation: pulse 0.5s ease-in-out infinite alternate;
+}
+
+/* ── Player List ──────────────────────────────────── */
+.player-list {
+    list-style: none;
+}
+
+.player-list li {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+.player-list li:last-child {
+    border-bottom: none;
+}
+
+.player-list .player-name {
+    color: var(--text-primary);
+}
+
+.player-list .player-role {
+    color: var(--text-dim);
+    font-size: 0.8rem;
+}
+
+.player-list .player-risk {
+    color: var(--warning);
+    font-size: 0.8rem;
+}
+
+.player-list .disconnected {
+    opacity: 0.4;
+}
+
+.connection-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #2d6a4f;
+    margin-right: 0.5rem;
+}
+
+.connection-dot.offline {
+    background: #8b1a1a;
+}
+
+/* ── Badges ───────────────────────────────────────── */
+.badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    margin-left: 0.3rem;
+}
+
+.badge-moral {
+    color: var(--accent-red-light);
+}
+
+.badge-collapse {
+    color: #666;
+}
+
+.badge-taken {
+    color: var(--accent-red-light);
+    animation: pulse 1s ease-in-out infinite alternate;
+}
+
+/* ── QR Code ──────────────────────────────────────── */
+.qr-container {
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.qr-container img {
+    max-width: 200px;
+    border: 2px solid var(--border-light);
+    border-radius: 8px;
+}
+
+.room-code {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    color: var(--text-primary);
+    text-align: center;
+    margin: 1rem 0;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ── Role Card ────────────────────────────────────── */
+.role-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--accent-red-dim);
+    border-radius: 8px;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.role-card .role-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent-red-light);
+    margin-bottom: 0.5rem;
+}
+
+.role-card .role-passive,
+.role-card .role-ability {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.3rem;
+}
+
+.role-card .role-ability {
+    color: var(--warning);
+}
+
+/* ── Ability Button ───────────────────────────────── */
+.ability-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    background: var(--accent-red-dim);
+    border: 1px solid var(--accent-red);
+    border-radius: 6px;
+    color: #ddd;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.ability-btn:hover:not(:disabled) {
+    background: var(--accent-red);
+}
+
+.ability-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+/* ── Event Display ────────────────────────────────── */
+.event-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.event-card .event-number {
+    font-size: 0.8rem;
+    color: var(--accent-red);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.3rem;
+}
+
+.event-card .event-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.8rem;
+}
+
+.event-card .event-desc {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
+/* ── Foreshadow Alert ─────────────────────────────── */
+.foreshadow-alert {
+    animation: foreshadowPulse 2s ease-in-out infinite;
+}
+
+@keyframes foreshadowPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* ── Coin Flip Animation ──────────────────────────── */
+.coin-flip-area {
+    margin-top: 1rem;
+}
+
+.coin-flip-result {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.8rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.5s ease;
+}
+
+.coin-flip-result.coin-animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.coin-flip-result.coin-heads {
+    border-color: var(--accent-red);
+}
+
+.coin-icon {
+    font-size: 2rem;
+    animation: none;
+}
+
+.coin-animate .coin-icon {
+    animation: coinSpin 2s ease-out;
+}
+
+@keyframes coinSpin {
+    0% { transform: rotateY(0deg); }
+    25% { transform: rotateY(180deg); }
+    50% { transform: rotateY(360deg); }
+    75% { transform: rotateY(540deg); }
+    100% { transform: rotateY(720deg); }
+}
+
+.coin-text {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* ── Result Messages ──────────────────────────────── */
+.result-msg {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    padding: 0.15rem 0;
+}
+
+.text-green {
+    color: var(--success);
+}
+
+/* ── Ending ───────────────────────────────────────── */
+.ending-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9998;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+.ending-text {
+    max-width: 600px;
+    text-align: center;
+}
+
+.ending-text .ending-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-red-light);
+    margin-bottom: 2rem;
+    opacity: 0;
+}
+
+.ending-text .ending-body {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    line-height: 2;
+    opacity: 0;
+}
+
+.ending-text .ending-personal-label {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-top: 2rem;
+    opacity: 0;
+}
+
+.ending-text .ending-personal {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 2;
+    margin-top: 1rem;
+    opacity: 0;
+}
+
+.ending-text .ending-personal-summary {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 2;
+    margin-top: 2rem;
+    opacity: 0;
+    white-space: pre-line;
+}
+
+.ending-text .ending-closure {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    margin-top: 3rem;
+    opacity: 0;
+    font-style: italic;
+}
+
+.ending-text .ending-reflection {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-top: 2rem;
+    opacity: 0;
+    font-style: italic;
+}
+
+.ending-text .ending-stats {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-top: 2rem;
+    opacity: 0;
+    font-variant-numeric: tabular-nums;
+}
+
+.reflection-timer {
+    font-size: 1rem;
+    color: var(--text-dim);
+    margin-top: 2rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.1em;
+}
+
+/* Typewriter animation */
+.typewriter {
+    animation: fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Host Panel ───────────────────────────────────── */
+.host-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .host-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.host-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.host-section h3 {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.host-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.host-controls .btn {
+    flex: 1;
+    min-width: 120px;
+    margin-bottom: 0;
+}
+
+/* ── Foreshadow List ──────────────────────────────── */
+.foreshadow-list {
+    list-style: none;
+}
+
+.foreshadow-list li {
+    padding: 0.3rem 0;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.foreshadow-type {
+    color: var(--accent-red);
+    font-weight: 500;
+}
+
+/* ── Messages ─────────────────────────────────────── */
+.message-area {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.8rem;
+    margin-top: 0.5rem;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.message-area .msg {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    padding: 0.2rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.message-area .msg:last-child {
+    border-bottom: none;
+}
+
+/* ── Toast ────────────────────────────────────────── */
+.toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-card);
+    border: 1px solid var(--accent-red);
+    border-radius: 6px;
+    padding: 0.8rem 1.5rem;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    z-index: 9000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.toast.show {
+    opacity: 1;
+}
+
+/* ── Vote Result Table ────────────────────────────── */
+.vote-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.vote-table th, .vote-table td {
+    padding: 0.4rem 0.6rem;
+    border-bottom: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.vote-table th {
+    color: var(--text-dim);
+    font-weight: 500;
+}
+
+/* ── Misc ─────────────────────────────────────────── */
+.hidden {
+    display: none !important;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-dim {
+    color: var(--text-dim);
+}
+
+.text-red {
+    color: var(--accent-red-light);
+}
+
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+
+.divider {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 1rem 0;
+}
+
+/* ── Public Vote Badge ────────────────────────────── */
+.public-vote-badge {
+    background: var(--accent-red);
+    color: #fff;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+/* ── Target Select Modal ──────────────────────────── */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 8000;
+}
+
+.modal-content {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    max-width: 360px;
+    width: 90%;
+}
+
+.modal-content h3 {
+    margin-bottom: 1rem;
+}
+
+.modal-content .btn {
+    margin-bottom: 0.5rem;
+}
+
+/* ══════════════════════════════════════════════════════
+   v2.0 增強功能樣式
+   ══════════════════════════════════════════════════════ */
+
+/* ── 1. Glassmorphism Dashboard (Host) ────────────── */
+.dashboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+    .dashboard {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+}
+
+.dashboard-card {
+    background: rgba(26, 26, 26, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+}
+
+.dashboard-label {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.3rem;
+}
+
+.dashboard-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+    transition: transform 0.3s ease;
+}
+
+.dashboard-value.fear {
+    color: var(--accent-red-light);
+}
+
+.dashboard-value.flow {
+    color: #4a9;
+}
+
+.dashboard-sub {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    font-weight: 400;
+}
+
+.dashboard-phase {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 0.2rem;
+}
+
+.dashboard-bar-track {
+    width: 100%;
+    height: 6px;
+    background: var(--bg-secondary);
+    border-radius: 3px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+}
+
+.dashboard-bar {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dashboard-bar-fear {
+    background: linear-gradient(90deg, var(--accent-red-dim), var(--accent-red-light));
+}
+
+.dashboard-bar-flow {
+    background: linear-gradient(90deg, #1a5a3a, #4a9);
+}
+
+.dashboard-taken-list {
+    margin-top: 0.3rem;
+    font-size: 0.75rem;
+}
+
+.taken-name {
+    color: var(--text-dim);
+    text-decoration: line-through;
+    margin: 0 0.2rem;
+}
+
+/* Value bounce animation */
+.value-bounce {
+    animation: valueBounce 0.5s ease;
+}
+
+@keyframes valueBounce {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.3); }
+    60% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+
+/* ── 2. Taken Away Overlay ────────────────────────── */
+.taken-away-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(139, 26, 26, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9500;
+    animation: takenPulse 0.5s ease-in-out infinite alternate;
+}
+
+.taken-away-text {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    padding: 2rem;
+    animation: takenFlicker 0.3s ease-in-out infinite alternate;
+}
+
+@keyframes takenPulse {
+    from { background: rgba(139, 26, 26, 0.85); }
+    to { background: rgba(180, 30, 30, 0.95); }
+}
+
+@keyframes takenFlicker {
+    from { opacity: 1; }
+    to { opacity: 0.7; }
+}
+
+.taken-shake {
+    animation: shakeScreen 0.15s ease-in-out 6, takenPulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes shakeScreen {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(-5px, 3px); }
+    50% { transform: translate(5px, -3px); }
+    75% { transform: translate(-3px, 5px); }
+    100% { transform: translate(0, 0); }
+}
+
+/* You taken away (special screen) */
+.you-taken-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9600;
+}
+
+.you-taken-text {
+    font-size: 1.5rem;
+    color: var(--accent-red-light);
+    text-align: center;
+    padding: 2rem;
+    animation: fadeIn 2s ease forwards;
+}
+
+/* Player taken away styles */
+.player-taken-away {
+    opacity: 0.5;
+}
+
+.name-taken {
+    text-decoration: line-through;
+    color: var(--text-dim) !important;
+}
+
+/* ── 3. Vote Chart ────────────────────────────────── */
+.vote-chart-area {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.vote-chart-area h3 {
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+}
+
+.vote-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.vote-bar-label {
+    width: 70px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+}
+
+.vote-bar-track {
+    flex: 1;
+    height: 20px;
+    background: var(--bg-secondary);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.vote-bar {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    min-width: 2px;
+}
+
+.vote-bar-comply {
+    background: linear-gradient(90deg, #1a3a6b, #3a7bd5);
+}
+
+.vote-bar-evade {
+    background: linear-gradient(90deg, #333, #666);
+}
+
+.vote-bar-resist {
+    background: linear-gradient(90deg, var(--accent-red-dim), var(--accent-red-light));
+}
+
+.vote-bar-count {
+    width: 100px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-align: right;
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Player-side smaller vote summary */
+.player-vote-summary h4 {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+}
+
+.vote-bar-label-sm {
+    width: 40px;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    flex-shrink: 0;
+}
+
+.vote-bar-track-sm {
+    flex: 1;
+    height: 12px;
+    background: var(--bg-secondary);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.vote-bar-count-sm {
+    width: 30px;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    text-align: right;
+    flex-shrink: 0;
+}
+
+/* ── 4. Coin Flip 3D Animation ────────────────────── */
+.coin-flip-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9400;
+}
+
+.coin-3d-container {
+    perspective: 600px;
+    width: 120px;
+    height: 120px;
+}
+
+.coin-3d {
+    width: 120px;
+    height: 120px;
+    position: relative;
+    transform-style: preserve-3d;
+}
+
+.coin-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    backface-visibility: hidden;
+}
+
+.coin-front {
+    background: linear-gradient(135deg, #ffd700, #ffaa00, #ffd700);
+    color: #6b3a00;
+    border: 4px solid #cc8800;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+}
+
+.coin-back {
+    background: linear-gradient(135deg, #c0c0c0, #888, #c0c0c0);
+    color: #333;
+    border: 4px solid #999;
+    box-shadow: 0 0 30px rgba(192, 192, 192, 0.5);
+    transform: rotateY(180deg);
+}
+
+.coin-flip-heads {
+    animation: coinFlip3D 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.coin-flip-tails {
+    animation: coinFlipTails3D 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes coinFlip3D {
+    0% { transform: rotateY(0deg) translateY(0); }
+    20% { transform: rotateY(360deg) translateY(-60px); }
+    40% { transform: rotateY(720deg) translateY(-40px); }
+    60% { transform: rotateY(1080deg) translateY(-20px); }
+    80% { transform: rotateY(1440deg) translateY(-5px); }
+    90% { transform: rotateY(1620deg) translateY(5px); }
+    100% { transform: rotateY(1800deg) translateY(0); }
+}
+
+@keyframes coinFlipTails3D {
+    0% { transform: rotateY(0deg) translateY(0); }
+    20% { transform: rotateY(360deg) translateY(-60px); }
+    40% { transform: rotateY(720deg) translateY(-40px); }
+    60% { transform: rotateY(1080deg) translateY(-20px); }
+    80% { transform: rotateY(1440deg) translateY(-5px); }
+    90% { transform: rotateY(1620deg) translateY(5px); }
+    100% { transform: rotateY(1980deg) translateY(0); }
+}
+
+.coin-result-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+}
+
+.coin-result-show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.coin-result-danger {
+    color: var(--accent-red-light);
+    text-shadow: 0 0 20px rgba(192, 57, 43, 0.5);
+}
+
+.coin-result-safe {
+    color: #c0c0c0;
+}
+
+/* Host coin list */
+.host-coin-list {
+    margin-top: 1rem;
+}
+
+.host-coin-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.8rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    margin-bottom: 0.3rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: coinItemSlide 0.5s ease forwards;
+}
+
+.host-coin-item.coin-heads {
+    border-color: var(--accent-red);
+    color: var(--accent-red-light);
+}
+
+.host-coin-icon {
+    font-size: 1.2rem;
+}
+
+@keyframes coinItemSlide {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ── 5. Anonymous Note System ─────────────────────── */
+.note-btn {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    margin-top: 0.3rem;
+    position: relative;
+}
+
+.note-btn:hover:not(:disabled) {
+    border-color: var(--warning);
+    color: var(--text-primary);
+}
+
+.note-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.note-btn #note-badge {
+    display: inline-block;
+    background: var(--accent-red-dim);
+    color: var(--accent-red-light);
+    font-size: 0.7rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 8px;
+    margin-left: 0.3rem;
+}
+
+.role-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.note-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 8500;
+}
+
+.note-content {
+    background: var(--bg-card);
+    border: 1px solid var(--warning);
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 340px;
+    width: 90%;
+    text-align: center;
+    animation: noteSlideIn 0.5s ease;
+}
+
+@keyframes noteSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) rotate(-2deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) rotate(0);
+    }
+}
+
+.note-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.note-label {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-bottom: 0.5rem;
+}
+
+.note-text {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    line-height: 1.8;
+    padding: 0.8rem;
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    font-style: italic;
+}
+
+.note-char-count {
+    text-align: right;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin-top: -0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.note-target-btn.selected {
+    background: var(--accent-red);
+    border-color: var(--accent-red-light);
+    color: #fff;
+}
+
+/* ── 6. Atmosphere Text ───────────────────────────── */
+.atmosphere-area {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-left: 3px solid var(--accent-red-dim);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.atmosphere-text {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    font-style: italic;
+    opacity: 0;
+}
+
+.atmosphere-fadein {
+    animation: atmosphereFade 1.5s ease forwards;
+}
+
+@keyframes atmosphereFade {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── Scrollbar ────────────────────────────────────── */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-light);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-dim);
+}
+
+/* ── Responsive (375px) ───────────────────────────── */
+@media (max-width: 400px) {
+    .dashboard {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+
+    .dashboard-value {
+        font-size: 1.4rem;
+    }
+
+    .dashboard-card {
+        padding: 0.7rem;
+    }
+
+    .vote-bar-label {
+        width: 50px;
+        font-size: 0.75rem;
+    }
+
+    .vote-bar-count {
+        width: 70px;
+        font-size: 0.7rem;
+    }
+
+    .taken-away-text {
+        font-size: 1.5rem;
+    }
+
+    .coin-3d-container,
+    .coin-3d {
+        width: 90px;
+        height: 90px;
+    }
+
+    .coin-face {
+        font-size: 2rem;
+    }
+
+    .coin-result-text {
+        font-size: 1.2rem;
+    }
+
+    .note-content {
+        padding: 1.5rem;
+    }
+
+    .you-taken-text {
+        font-size: 1.2rem;
+    }
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   v3.0 恐懼分級視覺系統
+   ═══════════════════════════════════════════════════════ */
+
+/* fear-0, fear-1: 正常暗色主題 */
+body.fear-0,
+body.fear-1 {
+    background-color: #0a0a0a;
+}
+
+/* fear-2, fear-3: 微紅色調 */
+body.fear-2,
+body.fear-3 {
+    background-color: #0e0808;
+}
+
+body.fear-2 .card,
+body.fear-3 .card {
+    border-color: rgba(139, 0, 0, 0.3);
+}
+
+/* fear-4, fear-5: 紅色脈動 glow */
+body.fear-4,
+body.fear-5 {
+    background-color: #0d0505;
+}
+
+body.fear-4 .card,
+body.fear-5 .card {
+    border-color: rgba(180, 0, 0, 0.4);
+    animation: fear-glow 3s ease-in-out infinite;
+}
+
+@keyframes fear-glow {
+    0%, 100% { box-shadow: 0 0 5px rgba(180, 0, 0, 0.2); }
+    50% { box-shadow: 0 0 20px rgba(180, 0, 0, 0.4); }
+}
+
+/* fear-6+: 重度紅色 glow + 文字閃爍 */
+body.fear-6 {
+    background-color: #0c0303;
+}
+
+body.fear-6 .card {
+    border-color: rgba(200, 0, 0, 0.5);
+    animation: fear-glow-intense 2s ease-in-out infinite;
+}
+
+@keyframes fear-glow-intense {
+    0%, 100% { box-shadow: 0 0 8px rgba(200, 0, 0, 0.3); }
+    50% { box-shadow: 0 0 30px rgba(200, 0, 0, 0.6); }
+}
+
+body.fear-6 .event-description,
+body.fear-6 .atmosphere-text {
+    animation: text-flicker 4s ease-in-out infinite;
+}
+
+@keyframes text-flicker {
+    0%, 92%, 100% { opacity: 1; }
+    93% { opacity: 0.6; }
+    95% { opacity: 1; }
+    96% { opacity: 0.5; }
+    98% { opacity: 1; }
+}
+
+/* ── 沉默倒數增強 ────────────────────────────────── */
+
+@keyframes breathe {
+    0%, 100% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.05); opacity: 1; }
+}
+
+.silence-overlay .countdown-number {
+    animation: breathe 3s ease-in-out infinite;
+    transition: color 0.5s ease;
+}
+
+.silence-overlay .countdown-number.countdown-yellow {
+    color: #f0c040;
+    animation: breathe 2s ease-in-out infinite;
+}
+
+.silence-overlay .countdown-number.countdown-red {
+    color: #e03030;
+    animation: breathe 1s ease-in-out infinite;
+}
+
+@keyframes bg-breathe {
+    0%, 100% { background-color: #000000; }
+    50% { background-color: #050505; }
+}
+
+.silence-overlay.active {
+    animation: bg-breathe 4s ease-in-out infinite;
+}
+
+.silence-atmosphere {
+    opacity: 0;
+    transition: opacity 2s ease-in;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.85rem;
+    font-style: italic;
+    text-align: center;
+    margin-top: 1.5rem;
+    max-width: 300px;
+}
+
+.silence-atmosphere.visible {
+    opacity: 1;
+}
+
+/* ── 討論計時器 ──────────────────────────────────── */
+
+.discussion-timer {
+    text-align: center;
+    padding: 1rem;
+    display: none;
+}
+
+.discussion-timer.active {
+    display: block;
+}
+
+.discussion-timer .timer-text {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #e0e0e0;
+}
+
+.discussion-timer .timer-label {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 0.3rem;
+}
+
+/* ── 觀察者模式 ──────────────────────────────────── */
+
+.observer-banner {
+    display: none;
+    background: rgba(100, 100, 100, 0.3);
+    border: 1px solid rgba(100, 100, 100, 0.5);
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+.observer-banner.active {
+    display: block;
+}
+
+body.observer-mode .vote-btn,
+body.observer-mode .ability-btn,
+body.observer-mode .note-btn {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+/* ── 風險燈號 ────────────────────────────────────── */
+
+.risk-zone-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+.risk-zone-dot.safe {
+    background-color: #4caf50;
+}
+
+.risk-zone-dot.caution {
+    background-color: #ff9800;
+}
+
+.risk-zone-dot.danger {
+    background-color: #f44336;
+    animation: danger-blink 1s ease-in-out infinite;
+}
+
+@keyframes danger-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.risk-zone-dot.taken {
+    background-color: #666;
+}
+
+/* ── 關主提示面板 ────────────────────────────────── */
+
+.host-guidance-area {
+    background: rgba(255, 193, 7, 0.08);
+    border: 1px solid rgba(255, 193, 7, 0.2);
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    margin-bottom: 1rem;
+    display: none;
+}
+
+.host-guidance-area.active {
+    display: block;
+}
+
+.host-guidance-area .guidance-text {
+    color: rgba(255, 193, 7, 0.9);
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+/* ── 壓力指標高亮 ────────────────────────────────── */
+
+.vote-bar.pressure-highlight .vote-bar-fill {
+    background: linear-gradient(90deg, #ff5722, #ff9800) !important;
+    box-shadow: 0 0 10px rgba(255, 87, 34, 0.4);
+}
+
+/* ── 投票按鈕描述文字 ────────────────────────────── */
+
+.vote-btn .vote-description {
+    display: block;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 0.3rem;
+    font-weight: 400;
+    line-height: 1.3;
+}
+
+/* ── 風險警告 ────────────────────────────────────── */
+
+.risk-warning {
+    background: rgba(244, 67, 54, 0.1);
+    border-left: 3px solid rgba(244, 67, 54, 0.6);
+    padding: 0.6rem 0.8rem;
+    margin: 0.5rem 0;
+    color: rgba(255, 200, 200, 0.9);
+    font-size: 0.85rem;
+    font-style: italic;
+    border-radius: 0 4px 4px 0;
+}
+
+/* ── 社會情境敘事 ────────────────────────────────── */
+
+.social-narrative {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+    font-style: italic;
+    text-align: center;
+    margin: 0.8rem 0;
+    padding: 0.5rem;
+}
+
+/* ── 敘事結果文字 ────────────────────────────────── */
+
+.narrative-text {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0.8rem 0;
+    padding: 0.8rem;
+    border-left: 2px solid rgba(255, 255, 255, 0.2);
+    font-style: italic;
+}
+
+/* ── 能力廣播 ────────────────────────────────────── */
+
+.ability-broadcast {
+    color: rgba(255, 193, 7, 0.7);
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 0.5rem;
+    font-style: italic;
+    animation: fadeInOut 3s ease-in-out;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   v3.1 全螢幕沉浸式 UI — Phase-as-Screen
+   ═══════════════════════════════════════════════════════ */
+
+/* ── 遊戲視口 ──────────────────────────────────────── */
+.game-viewport {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    overflow: hidden;
+    background: var(--bg-primary);
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── 精簡狀態列 ────────────────────────────────────── */
+.status-bar-compact {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.4rem 1rem;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+    height: 36px;
+    font-size: 0.8rem;
+    z-index: 100;
+}
+
+.sbc-item {
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+}
+
+.sbc-item strong {
+    font-size: 0.95rem;
+    margin-left: 0.2rem;
+}
+
+.sbc-sep {
+    color: var(--border-light);
+    font-size: 0.6rem;
+}
+
+/* ── 子畫面容器 ────────────────────────────────────── */
+.game-screens-container {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+}
+
+.game-screen {
+    position: absolute;
+    inset: 0;
+    padding: 1rem 1.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.game-screen.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ── 畫面內容佈局 ──────────────────────────────────── */
+.screen-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.screen-content-center {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.screen-content-between {
+    justify-content: space-between;
+}
+
+.screen-scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 1rem;
+}
+
+.screen-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.8rem;
+    flex-shrink: 0;
+}
+
+/* ── FAB 浮動按鈕 ──────────────────────────────────── */
+.fab-group {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 200;
+}
+
+.fab {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid var(--border-light);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    font-size: 0.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    position: relative;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.fab:active {
+    transform: scale(0.9);
+}
+
+.fab-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: var(--accent-red);
+    color: #fff;
+    font-size: 0.55rem;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ── 角色卡底部抽屜 ────────────────────────────────── */
+.bottom-sheet {
+    position: absolute;
+    inset: 0;
+    z-index: 300;
+    pointer-events: none;
+}
+
+.bottom-sheet.active {
+    pointer-events: auto;
+}
+
+.bottom-sheet-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0);
+    transition: background 0.3s ease;
+}
+
+.bottom-sheet.active .bottom-sheet-backdrop {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.bottom-sheet-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-card);
+    border-top: 1px solid var(--accent-red-dim);
+    border-radius: 16px 16px 0 0;
+    padding: 1rem 1.5rem 2rem;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    max-height: 50dvh;
+    overflow-y: auto;
+}
+
+.bottom-sheet.active .bottom-sheet-content {
+    transform: translateY(0);
+}
+
+.sheet-handle {
+    width: 40px;
+    height: 4px;
+    background: var(--border-light);
+    border-radius: 2px;
+    margin: 0 auto 1rem;
+}
+
+/* ── 子畫面內投票按鈕緊湊化 ────────────────────────── */
+.game-screen .vote-btn {
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+}
+
+.game-screen .vote-btn .vote-description {
+    font-size: 0.65rem;
+    margin-top: 0.15rem;
+}
+
+.game-screen .vote-choices {
+    gap: 0.6rem;
+}
+
+/* ── 氛圍文字浮動定位 ──────────────────────────────── */
+.atmosphere-floating {
+    position: absolute;
+    bottom: 5rem;
+    left: 1rem;
+    right: 4rem;
+    z-index: 50;
+    pointer-events: none;
+}
+
+/* ── 事件畫面 ──────────────────────────────────────── */
+#game-screen-event .event-number {
+    font-size: 0.85rem;
+    color: var(--accent-red);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+}
+
+#game-screen-event .event-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+#game-screen-event .event-desc {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* ── 討論畫面 ──────────────────────────────────────── */
+#game-screen-discussion .timer-text {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #e0e0e0;
+    margin: 0.5rem 0;
+}
+
+#game-screen-discussion .timer-label {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* ── 觀察者 banner 定位（viewport 內）───────────────── */
+.game-viewport .observer-banner.active {
+    display: block;
+    flex-shrink: 0;
+}

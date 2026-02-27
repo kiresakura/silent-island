@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>關主面板 — 靜默之島 v3.0</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container container-wide">
+        <div class="header">
+            <h1>靜默之島</h1>
+            <p class="subtitle">關主控制面板 v3.0</p>
+        </div>
+
+        <!-- 等待建立房間 -->
+        <div id="creating-phase">
+            <div class="card text-center">
+                <p>正在建立房間...</p>
+            </div>
+        </div>
+
+        <!-- 等待玩家加入 -->
+        <div id="waiting-phase" class="hidden">
+            <div class="card text-center">
+                <h3>房間碼</h3>
+                <div class="room-code" id="room-code-display">----</div>
+                <div class="qr-container">
+                    <img id="qr-img" src="" alt="QR Code">
+                </div>
+                <p class="text-dim" style="font-size: 0.85rem;">掃描 QR Code 或輸入房間碼加入</p>
+            </div>
+
+            <div class="card">
+                <h3>已加入的玩家 (<span id="player-count">0</span>/8)</h3>
+                <ul class="player-list" id="waiting-player-list"></ul>
+                <div class="mt-2">
+                    <button class="btn btn-primary" id="start-game-btn" onclick="startGame()" disabled>
+                        開始遊戲（至少 6 人）
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 遊戲進行中 -->
+        <div id="game-phase" class="hidden">
+            <!-- 即時社會狀態儀表板 -->
+            <div class="dashboard">
+                <div class="dashboard-card">
+                    <div class="dashboard-label">😨 社會恐懼</div>
+                    <div class="dashboard-value fear" id="host-fear">0</div>
+                    <div class="dashboard-bar-track">
+                        <div class="dashboard-bar dashboard-bar-fear" id="fear-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="dashboard-label">💭 思想流通</div>
+                    <div class="dashboard-value flow" id="host-flow">0</div>
+                    <div class="dashboard-bar-track">
+                        <div class="dashboard-bar dashboard-bar-flow" id="flow-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="dashboard-label">👥 存活玩家</div>
+                    <div class="dashboard-value" id="host-alive">0/0</div>
+                    <div class="dashboard-taken-list" id="dashboard-taken-list"></div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="dashboard-label">📅 回合進度</div>
+                    <div class="dashboard-value" id="host-round">0<span class="dashboard-sub">/6</span></div>
+                    <div class="dashboard-phase" id="host-phase">等待</div>
+                </div>
+            </div>
+
+            <!-- 氛圍文字 -->
+            <div id="atmosphere-area" class="atmosphere-area hidden">
+                <p id="atmosphere-text" class="atmosphere-text"></p>
+            </div>
+
+            <!-- 投票統計視覺化 -->
+            <div id="vote-chart-area" class="vote-chart-area hidden">
+                <h3>投票統計</h3>
+                <div class="vote-bar-row">
+                    <span class="vote-bar-label">🔵 服從</span>
+                    <div class="vote-bar-track"><div class="vote-bar vote-bar-comply" id="bar-comply" style="width:0%"></div></div>
+                    <span class="vote-bar-count" id="count-comply">0</span>
+                </div>
+                <div class="vote-bar-row">
+                    <span class="vote-bar-label">⚫ 迴避</span>
+                    <div class="vote-bar-track"><div class="vote-bar vote-bar-evade" id="bar-evade" style="width:0%"></div></div>
+                    <span class="vote-bar-count" id="count-evade">0</span>
+                </div>
+                <div class="vote-bar-row">
+                    <span class="vote-bar-label">🔴 抵抗</span>
+                    <div class="vote-bar-track"><div class="vote-bar vote-bar-resist" id="bar-resist" style="width:0%"></div></div>
+                    <span class="vote-bar-count" id="count-resist">0</span>
+                </div>
+            </div>
+
+            <!-- 關主引導提示 -->
+            <div id="host-guidance-area" class="host-guidance-area">
+                <div class="guidance-text" id="host-guidance-text"></div>
+            </div>
+
+            <!-- 控制按鈕 -->
+            <div class="host-controls" id="host-controls">
+                <button class="btn btn-primary btn-small" id="btn-next-event" onclick="nextEvent()">下一事件</button>
+                <button class="btn btn-small" id="btn-start-silence" onclick="startSilence()" disabled>沉默倒數</button>
+                <button class="btn btn-small" id="btn-start-discussion" onclick="startDiscussion()" disabled>開始討論</button>
+                <button class="btn btn-small" id="btn-start-voting" onclick="startVoting()" disabled>開始投票</button>
+                <button class="btn btn-small" id="btn-end-voting" onclick="endVoting()" disabled>結束投票</button>
+                <button class="btn btn-danger btn-small" id="btn-show-ending" onclick="showEnding()" disabled>顯示結局</button>
+            </div>
+
+            <!-- 投票計時器 -->
+            <div class="host-timer" id="host-vote-timer"></div>
+
+            <!-- 事件顯示 -->
+            <div id="host-event-area" class="hidden">
+                <div class="event-card">
+                    <div class="event-number" id="host-event-number"></div>
+                    <div class="event-title" id="host-event-title"></div>
+                    <div class="event-desc" id="host-event-desc"></div>
+                </div>
+            </div>
+
+            <div class="host-grid">
+                <!-- 玩家列表 -->
+                <div class="host-section">
+                    <h3>玩家狀態 <span class="text-dim" style="font-size: 0.75rem;">（被帶走門檻：風險≥10）</span></h3>
+                    <ul class="player-list" id="game-player-list"></ul>
+                </div>
+
+                <!-- 伏筆區 -->
+                <div class="host-section">
+                    <h3>伏筆記錄 <span class="text-dim" style="font-size: 0.75rem;">（第5回合清算）</span></h3>
+                    <ul class="foreshadow-list" id="foreshadow-list">
+                        <li class="text-dim">尚無伏筆</li>
+                    </ul>
+                </div>
+
+                <!-- 本回合投票 -->
+                <div class="host-section">
+                    <h3>本回合投票</h3>
+                    <div id="vote-status-area">
+                        <p class="text-dim">等待投票</p>
+                    </div>
+                </div>
+
+                <!-- 訊息 -->
+                <div class="host-section">
+                    <h3>事件日誌</h3>
+                    <div class="message-area" id="host-log"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 被帶走 overlay -->
+        <div id="taken-away-overlay" class="taken-away-overlay hidden">
+            <div class="taken-away-text" id="taken-away-text"></div>
+        </div>
+
+        <!-- 結局 -->
+        <div id="ending-overlay" class="ending-overlay hidden">
+            <div class="ending-text" id="ending-display"></div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="/static/js/ws.js"></script>
+    <script src="/static/js/audio.js"></script>
+    <script src="/static/js/host.js"></script>
+</body>
+</html>
