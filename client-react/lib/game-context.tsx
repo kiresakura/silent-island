@@ -563,9 +563,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   // Connect on mount — only when we have credentials
   // (we'll trigger connection from JoinScreen)
   const hasConnected = useRef(false)
+  const joinSentRef = useRef(false)
 
   const joinGame = useCallback(
     (roomCode: string, playerName: string) => {
+      if (joinSentRef.current) return
+      joinSentRef.current = true
+
       dispatch({ type: 'SET_ROOM_CODE', code: roomCode })
       dispatch({ type: 'SET_PLAYER_NAME', name: playerName })
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { useGame, useGameJoin } from '@/lib/game-context'
 
@@ -9,13 +9,16 @@ export function JoinScreen() {
   const joinGame = useGameJoin()
   const [name, setName] = useState('')
   const [code, setCode] = useState(state.roomCode || '')
+  const [joining, setJoining] = useState(false)
 
-  const handleJoin = () => {
+  const handleJoin = useCallback(() => {
+    if (joining) return
     const trimName = name.trim()
     const trimCode = code.trim().toUpperCase() || state.roomCode
     if (!trimName || !trimCode) return
+    setJoining(true)
     joinGame(trimCode, trimName)
-  }
+  }, [joining, name, code, state.roomCode, joinGame])
 
   return (
     <motion.div
@@ -76,11 +79,11 @@ export function JoinScreen() {
         <motion.button
           whileTap={{ scale: 0.95 }}
           onClick={handleJoin}
-          disabled={!name.trim()}
+          disabled={!name.trim() || joining}
           className="mt-4 w-full py-3 rounded-lg bg-gradient-to-r from-[var(--crimson)] to-[var(--crimson-light)] text-foreground font-medium text-sm disabled:opacity-40 disabled:cursor-not-allowed transition-opacity min-h-[44px]"
           aria-label="加入遊戲"
         >
-          加入遊戲
+          {joining ? '加入中...' : '加入遊戲'}
         </motion.button>
       </div>
     </motion.div>
