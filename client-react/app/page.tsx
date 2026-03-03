@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import { GameProvider, useGame } from '@/lib/game-context'
+import { useAudio } from '@/lib/use-audio'
 import { PersistentHeader } from '@/components/game/persistent-header'
 import { JoinScreen } from '@/components/game/screens/join-screen'
 import { LobbyScreen } from '@/components/game/screens/lobby-screen'
@@ -30,6 +31,60 @@ function GameUI() {
   const { state } = useGame()
   const [roleOpen, setRoleOpen] = useState(false)
   const [noteOpen, setNoteOpen] = useState(false)
+  const { unlock, playBgm, fadeOutBgm, playEventReveal, playEnding, stopAll } = useAudio()
+  const prevScreenRef = useRef(state.screen)
+
+  // Unlock audio on first user interaction
+  const handleFirstInteraction = useCallback(() => {
+    unlock()
+    // Try playing BGM if we're on join or lobby
+    if (state.screen === 'join' || state.screen === 'lobby') {
+      playBgm()
+    }
+    document.removeEventListener('click', handleFirstInteraction)
+    document.removeEventListener('touchstart', handleFirstInteraction)
+  }, [unlock, playBgm, state.screen])
+
+  useEffect(() => {
+    document.addEventListener('click', handleFirstInteraction, { once: true })
+    document.addEventListener('touchstart', handleFirstInteraction, { once: true })
+    return () => {
+      document.removeEventListener('click', handleFirstInteraction)
+      document.removeEventListener('touchstart', handleFirstInteraction)
+    }
+  }, [handleFirstInteraction])
+
+  // React to screen changes for audio triggers
+  useEffect(() => {
+    const prev = prevScreenRef.current
+    const curr = state.screen
+    prevScreenRef.current = curr
+
+    if (prev === curr) return
+
+    // BGM: play during join/lobby screens
+    if (curr === 'join' || curr === 'lobby') {
+      playBgm()
+    }
+
+    // Game started → fade out BGM
+    if (curr === 'waiting' && (prev === 'join' || prev === 'lobby')) {
+      fadeOutBgm()
+    }
+
+    // Event reveal → play event music
+    if (curr === 'event') {
+      playEventReveal()
+    }
+  }, [state.screen, playBgm, fadeOutBgm, playEventReveal])
+
+  // Ending → stop other audio, play ending music
+  useEffect(() => {
+    if (state.showEnding) {
+      stopAll()
+      playEnding()
+    }
+  }, [state.showEnding, stopAll, playEnding])
 
   const screenComponent = () => {
     switch (state.screen) {

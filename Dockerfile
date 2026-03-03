@@ -11,6 +11,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY server/ server/
 COPY client/ client/
+COPY audio/ audio/
 COPY --from=react-build /build/out client-react/out/
 EXPOSE 8001
 CMD uvicorn server.main:app --host 0.0.0.0 --port ${PORT:-8001}

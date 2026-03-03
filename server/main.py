@@ -26,8 +26,13 @@ app = FastAPI(title="靜默之島：選擇與代價 v2.0")
 # ── 靜態檔案 ──────────────────────────────────────────
 CLIENT_DIR = Path(__file__).parent.parent / "client"
 REACT_DIR = Path(__file__).parent.parent / "client-react" / "out"
+AUDIO_DIR = Path(__file__).parent.parent / "audio"
 
 app.mount("/static", StaticFiles(directory=str(CLIENT_DIR)), name="static")
+
+# 背景音樂 / 音效
+if AUDIO_DIR.exists():
+    app.mount("/audio", StaticFiles(directory=str(AUDIO_DIR)), name="audio")
 
 # React 靜態資源（_next/）
 _next_dir = REACT_DIR / "_next"
