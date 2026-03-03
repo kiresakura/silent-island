@@ -44,6 +44,21 @@
     <div id="toast" class="toast"></div>
 
     <script>
+        // ── 背景音樂 ──
+        const bgm = new Audio('/audio/開場主題曲.mp3');
+        bgm.loop = true;
+        bgm.volume = 0.3;
+        bgm.preload = 'auto';
+
+        let bgmStarted = false;
+        function tryPlayBgm() {
+            if (bgmStarted) return;
+            bgmStarted = true;
+            bgm.play().catch(() => { bgmStarted = false; });
+        }
+        document.addEventListener('click', tryPlayBgm, { once: true });
+        document.addEventListener('touchstart', tryPlayBgm, { once: true });
+
         function showToast(msg) {
             const t = document.getElementById('toast');
             t.textContent = msg;

@@ -13,6 +13,11 @@ class SilentIslandAudio {
     this._ambientOsc = null;
     this._ambientLfo = null;
     this._ambientGain = null;
+    // MP3 背景音樂
+    this._bgm = null;
+    this._eventReveal = null;
+    this._ending = null;
+    this._bgmFadeTimer = null;
   }
 
   /** 初始化 AudioContext（需由使用者互動觸發） */
@@ -307,11 +312,109 @@ class SilentIslandAudio {
     if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
   }
 
+  // ── MP3 背景音樂 ────────────────────────────────────
+
+  _getBgm() {
+    if (!this._bgm) {
+      this._bgm = new Audio('/audio/開場主題曲.mp3');
+      this._bgm.loop = true;
+      this._bgm.volume = 0.3;
+      this._bgm.preload = 'auto';
+    }
+    return this._bgm;
+  }
+
+  _getEventReveal() {
+    if (!this._eventReveal) {
+      this._eventReveal = new Audio('/audio/事件揭露.mp3');
+      this._eventReveal.loop = false;
+      this._eventReveal.volume = 0.6;
+      this._eventReveal.preload = 'auto';
+    }
+    return this._eventReveal;
+  }
+
+  _getEnding() {
+    if (!this._ending) {
+      this._ending = new Audio('/audio/結尾.mp3');
+      this._ending.loop = false;
+      this._ending.volume = 0.5;
+      this._ending.preload = 'auto';
+    }
+    return this._ending;
+  }
+
+  /** 解鎖音頻（瀏覽器 autoplay 限制） */
+  unlockAudio() {
+    const bgm = this._getBgm();
+    bgm.play().then(() => bgm.pause()).catch(() => {});
+    this._getEventReveal().load();
+    this._getEnding().load();
+  }
+
+  playBgm() {
+    const bgm = this._getBgm();
+    if (this._bgmFadeTimer) {
+      clearInterval(this._bgmFadeTimer);
+      this._bgmFadeTimer = null;
+    }
+    bgm.volume = 0.3;
+    bgm.play().catch(() => {});
+  }
+
+  stopBgm() {
+    const bgm = this._getBgm();
+    bgm.pause();
+    bgm.currentTime = 0;
+  }
+
+  fadeOutBgm() {
+    const bgm = this._getBgm();
+    if (bgm.paused) return;
+    if (this._bgmFadeTimer) clearInterval(this._bgmFadeTimer);
+    const step = bgm.volume / 30; // 1.5s fade
+    this._bgmFadeTimer = setInterval(() => {
+      if (bgm.volume <= step) {
+        bgm.volume = 0;
+        bgm.pause();
+        bgm.currentTime = 0;
+        bgm.volume = 0.3;
+        clearInterval(this._bgmFadeTimer);
+        this._bgmFadeTimer = null;
+      } else {
+        bgm.volume -= step;
+      }
+    }, 50);
+  }
+
+  playEventReveal() {
+    const audio = this._getEventReveal();
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+  }
+
+  playEndingMusic() {
+    const audio = this._getEnding();
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+  }
+
+  stopAllMusic() {
+    if (this._bgmFadeTimer) {
+      clearInterval(this._bgmFadeTimer);
+      this._bgmFadeTimer = null;
+    }
+    if (this._bgm) { this._bgm.pause(); this._bgm.currentTime = 0; this._bgm.volume = 0.3; }
+    if (this._eventReveal) { this._eventReveal.pause(); this._eventReveal.currentTime = 0; }
+    if (this._ending) { this._ending.pause(); this._ending.currentTime = 0; }
+  }
+
   // ── 清理 ──────────────────────────────────────────
 
   destroy() {
     this.stopHeartbeat();
     this.stopAmbient();
+    this.stopAllMusic();
     if (this.ctx) {
       this.ctx.close();
       this.ctx = null;
