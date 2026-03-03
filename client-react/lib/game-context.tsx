@@ -271,7 +271,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             abilityUsed: false,
           }
           dispatch({ type: 'SET_ROLE', role })
-          dispatch({ type: 'SET_SCREEN', screen: 'waiting' })
+          dispatch({ type: 'SET_SCREEN', screen: 'intro' })
           break
         }
 

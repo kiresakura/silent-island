@@ -5,6 +5,8 @@
 export type Screen =
   | 'join'
   | 'lobby'
+  | 'intro'
+  | 'role-reveal'
   | 'event'
   | 'discussion'
   | 'voting'

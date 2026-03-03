@@ -13,6 +13,8 @@ import { VotingScreen } from '@/components/game/screens/voting-screen'
 import { ResultScreen } from '@/components/game/screens/result-screen'
 import { ForeshadowScreen } from '@/components/game/screens/foreshadow-screen'
 import { WaitingScreen } from '@/components/game/screens/waiting-screen'
+import { IntroScreen } from '@/components/game/screens/intro-screen'
+import { RoleRevealScreen } from '@/components/game/screens/role-reveal-screen'
 import { SilenceOverlay } from '@/components/game/overlays/silence-overlay'
 import { CoinFlipOverlay } from '@/components/game/overlays/coin-flip-overlay'
 import { TakenAwayOverlay } from '@/components/game/overlays/taken-away-overlay'
@@ -67,9 +69,14 @@ function GameUI() {
       playBgm()
     }
 
-    // Game started → fade out BGM
-    if (curr === 'waiting' && (prev === 'join' || prev === 'lobby')) {
+    // Intro → fade out BGM
+    if (curr === 'intro') {
       fadeOutBgm()
+    }
+
+    // Role reveal → play event reveal music
+    if (curr === 'role-reveal') {
+      playEventReveal()
     }
 
     // Event reveal → play event music
@@ -92,6 +99,10 @@ function GameUI() {
         return <JoinScreen key="join" />
       case 'lobby':
         return <LobbyScreen key="lobby" />
+      case 'intro':
+        return <IntroScreen key="intro" />
+      case 'role-reveal':
+        return <RoleRevealScreen key="role-reveal" />
       case 'event':
         return <EventScreen key="event" />
       case 'discussion':
