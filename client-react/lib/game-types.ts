@@ -7,6 +7,7 @@ export type Screen =
   | 'lobby'
   | 'intro'
   | 'role-reveal'
+  | 'identity-confirm'
   | 'event'
   | 'discussion'
   | 'voting'
@@ -213,6 +214,7 @@ export type GameAction =
   | { type: 'DISMISS_NOTE' }
   | { type: 'USE_NOTE' }
   | { type: 'SET_NOTE_REMAINING'; count: number }
+  | { type: 'CONFIRM_IDENTITY' }
   | { type: 'USE_ABILITY' }
   | { type: 'ABILITY_USED' }
   | { type: 'SET_PLAYERS'; players: Player[] }

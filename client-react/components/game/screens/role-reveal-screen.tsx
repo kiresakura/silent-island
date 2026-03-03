@@ -102,7 +102,7 @@ export function RoleRevealScreen() {
         animate={{ opacity: showDetails ? 1 : 0 }}
         transition={{ duration: 0.4, delay: 0.5 }}
         whileTap={{ scale: 0.95 }}
-        onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'waiting' })}
+        onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'identity-confirm' })}
         className="mt-2 px-8 py-3 rounded-lg bg-gradient-to-r from-[var(--crimson)] to-[var(--crimson-light)] text-foreground font-medium text-sm min-h-[44px]"
       >
         準備好了

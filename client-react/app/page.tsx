@@ -15,6 +15,7 @@ import { ForeshadowScreen } from '@/components/game/screens/foreshadow-screen'
 import { WaitingScreen } from '@/components/game/screens/waiting-screen'
 import { IntroScreen } from '@/components/game/screens/intro-screen'
 import { RoleRevealScreen } from '@/components/game/screens/role-reveal-screen'
+import { IdentityConfirmScreen } from '@/components/game/screens/identity-confirm-screen'
 import { SilenceOverlay } from '@/components/game/overlays/silence-overlay'
 import { CoinFlipOverlay } from '@/components/game/overlays/coin-flip-overlay'
 import { TakenAwayOverlay } from '@/components/game/overlays/taken-away-overlay'
@@ -103,6 +104,8 @@ function GameUI() {
         return <IntroScreen key="intro" />
       case 'role-reveal':
         return <RoleRevealScreen key="role-reveal" />
+      case 'identity-confirm':
+        return <IdentityConfirmScreen key="identity-confirm" />
       case 'event':
         return <EventScreen key="event" />
       case 'discussion':

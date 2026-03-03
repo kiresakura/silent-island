@@ -179,6 +179,8 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       return { ...state, noteRemaining: Math.max(0, state.noteRemaining - 1) }
     case 'SET_NOTE_REMAINING':
       return { ...state, noteRemaining: action.count }
+    case 'CONFIRM_IDENTITY':
+      return state // handled by WS send
     case 'USE_ABILITY':
       return state // handled by WS send
     case 'ABILITY_USED':
@@ -274,6 +276,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           dispatch({ type: 'SET_SCREEN', screen: 'intro' })
           break
         }
+
+        case 'identity_confirmed':
+          dispatch({ type: 'SET_SCREEN', screen: 'waiting' })
+          break
 
         case 'event':
         case 'event_observer': {
@@ -615,6 +621,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
       // Side effects that send WebSocket messages
       switch (action.type) {
+        case 'CONFIRM_IDENTITY':
+          send({ type: 'confirm_identity' })
+          break
         case 'VOTE':
           send({ type: 'vote', choice: action.choice })
           vibrate(50)
