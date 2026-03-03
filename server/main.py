@@ -169,6 +169,11 @@ async def websocket_endpoint(ws: WebSocket):
 
             # ── 加入房間 ──
             elif msg_type == "join_room":
+                # 防重複：若該 WebSocket 已是玩家，忽略重複加入
+                if role == "player":
+                    logger.info(f"Duplicate join_room ignored for player {player_id}")
+                    continue
+
                 code = msg.get("room_code", "").strip()
                 name = msg.get("player_name", "").strip()
 
