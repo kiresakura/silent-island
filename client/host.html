@@ -102,10 +102,27 @@
                 <div class="guidance-text" id="host-guidance-text"></div>
             </div>
 
+            <!-- 身份確認進度 -->
+            <div id="identity-confirm-area" class="card hidden" style="margin: 0.5rem 0; padding: 0.75rem 1rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="margin: 0; font-size: 0.9rem;">身份確認進度</h3>
+                    <span id="confirm-count" class="text-dim" style="font-size: 0.85rem;">已確認：0/0</span>
+                </div>
+                <ul class="player-list" id="confirm-player-list" style="margin-top: 0.5rem;"></ul>
+                <button class="btn btn-small" onclick="forceStartGame()" style="margin-top: 0.5rem;">強制開始（跳過等待）</button>
+            </div>
+
             <!-- 控制按鈕 -->
             <div class="host-controls" id="host-controls">
                 <button class="btn btn-primary btn-small" id="btn-next-event" onclick="nextEvent()">下一事件</button>
                 <button class="btn btn-small" id="btn-start-silence" onclick="startSilence()" disabled>沉默倒數</button>
+                <select id="select-discussion-time" class="btn btn-small" style="appearance:auto;">
+                    <option value="60">1 分鐘</option>
+                    <option value="120" selected>2 分鐘</option>
+                    <option value="180">3 分鐘</option>
+                    <option value="300">5 分鐘</option>
+                    <option value="0">不討論（跳過）</option>
+                </select>
                 <button class="btn btn-small" id="btn-start-discussion" onclick="startDiscussion()" disabled>開始討論</button>
                 <button class="btn btn-small" id="btn-start-voting" onclick="startVoting()" disabled>開始投票</button>
                 <button class="btn btn-small" id="btn-end-voting" onclick="endVoting()" disabled>結束投票</button>

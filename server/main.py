@@ -259,6 +259,32 @@ async def websocket_endpoint(ws: WebSocket):
                     "type": "game_started_host",
                     "host_view": room.engine.get_host_view(),
                 })
+                await send_json(ws, {
+                    "type": "identity_confirmation_status",
+                    **room.engine.get_identity_confirmation_status(),
+                })
+
+            # ── 確認身份 ──
+            elif msg_type == "confirm_identity":
+                if role != "player" or not room or not player_id:
+                    continue
+
+                newly_confirmed = room.engine.confirm_identity(player_id)
+                if not newly_confirmed:
+                    continue
+
+                await send_json(ws, {"type": "identity_confirmed"})
+
+                status = room.engine.get_identity_confirmation_status()
+                if room.host_ws:
+                    await send_json(room.host_ws, {
+                        "type": "identity_confirmation_status",
+                        **status,
+                    })
+                    if status["all_confirmed"]:
+                        await send_json(room.host_ws, {
+                            "type": "all_identities_confirmed",
+                        })
 
             # ── 下一事件 ──
             elif msg_type == "next_event":
@@ -347,20 +373,19 @@ async def websocket_endpoint(ws: WebSocket):
                     "host_guidance": guidance,
                 })
 
-            # ── 開始討論（已停用，直接跳過） ──
+            # ── 開始討論 ──
             elif msg_type == "start_discussion":
                 if role != "host" or not room:
                     continue
-                # 跳過討論，直接進入投票
-                room.engine.state.phase = GamePhase.VOTING
-                atmosphere = room.engine.get_waiting_atmosphere("pre_voting")
+                seconds = data.get("seconds", 120)
+                room.engine.state.phase = GamePhase.DISCUSSION
+                atmosphere = room.engine.get_waiting_atmosphere("pre_discussion")
                 guidance = room.engine.get_host_guidance(
-                    room.engine.state.current_event, "voting_open"
+                    room.engine.state.current_event, "discussion"
                 )
                 await broadcast_all(room, {
-                    "type": "voting_open",
-                    "seconds": 30,
-                    "public_voting": room.engine.state.public_voting,
+                    "type": "discussion_start",
+                    "seconds": seconds,
                     "atmosphere": atmosphere,
                     "host_guidance": guidance,
                 })

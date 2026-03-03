@@ -208,6 +208,8 @@ class Player:
     taken_away: bool = False    # 是否已被帶走
     # v3.0: 觀察者模式（被帶走後仍可觀看）
     observer_mode: bool = False
+    # v3.0: 身份確認
+    identity_confirmed: bool = False
 
     @property
     def role_info(self) -> dict[str, str]:

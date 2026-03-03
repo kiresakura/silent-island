@@ -103,6 +103,44 @@ class GameEngine:
         self.state.phase = GamePhase.EVENT
         return result
 
+    # ── 身份確認 ──────────────────────────────────────
+
+    def confirm_identity(self, player_id: str) -> bool:
+        """標記玩家已確認身份。回傳 True 表示新確認。"""
+        player = self.players.get(player_id)
+        if not player or player.identity_confirmed:
+            return False
+        player.identity_confirmed = True
+        return True
+
+    def all_identities_confirmed(self) -> bool:
+        """檢查所有已連線玩家是否都已確認身份。"""
+        return all(
+            p.identity_confirmed
+            for p in self.players.values()
+            if p.connected
+        )
+
+    def get_identity_confirmation_status(self) -> dict:
+        """回傳身份確認進度（給關主顯示）。"""
+        confirmed = []
+        pending = []
+        for p in self.players.values():
+            if not p.connected:
+                continue
+            entry = {"player_id": p.id, "player_name": p.name}
+            if p.identity_confirmed:
+                confirmed.append(entry)
+            else:
+                pending.append(entry)
+        return {
+            "confirmed_count": len(confirmed),
+            "total_count": len(confirmed) + len(pending),
+            "confirmed": confirmed,
+            "pending": pending,
+            "all_confirmed": len(pending) == 0,
+        }
+
     # ── 取得事件 ──────────────────────────────────────
 
     def get_next_event(self) -> Optional[dict]:

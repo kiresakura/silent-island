@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react'
 
 export function TakenAwayOverlay() {
   const { state, dispatch, vibrate } = useGame()
-  const { showTakenAway } = state
+  const { showTakenAway, isTakenAway } = state
   const [phase, setPhase] = useState<'shake' | 'vignette' | 'fade' | 'done'>('shake')
 
   useEffect(() => {
@@ -20,7 +20,9 @@ export function TakenAwayOverlay() {
     const t2 = setTimeout(() => setPhase('fade'), 2500)
     const t3 = setTimeout(() => {
       setPhase('done')
-      dispatch({ type: 'SET_OBSERVER' })
+      if (isTakenAway) {
+        dispatch({ type: 'SET_OBSERVER' })
+      }
     }, 4000)
 
     return () => {
@@ -28,7 +30,7 @@ export function TakenAwayOverlay() {
       clearTimeout(t2)
       clearTimeout(t3)
     }
-  }, [showTakenAway, vibrate, dispatch])
+  }, [showTakenAway, isTakenAway, vibrate, dispatch])
 
   return (
     <AnimatePresence>

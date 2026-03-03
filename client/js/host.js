@@ -37,6 +37,12 @@ function handleMessage(data) {
         case 'game_started_host':
             onGameStarted(data);
             break;
+        case 'identity_confirmation_status':
+            onIdentityConfirmationStatus(data);
+            break;
+        case 'all_identities_confirmed':
+            onAllIdentitiesConfirmed();
+            break;
         case 'event':
             onEvent(data);
             break;
@@ -133,11 +139,54 @@ function onGameStarted(data) {
     hostView = data.host_view;
     hide('waiting-phase');
     show('game-phase');
+    show('identity-confirm-area');
     updateHostView();
-    addLog('遊戲開始！角色已分配。');
+    addLog('遊戲開始！角色已分配，等待玩家確認身份。');
+
+    // 等待全員確認後才能開始第一個事件
+    document.getElementById('btn-next-event').disabled = true;
 
     // 淡出大廳 BGM
     silentAudio.fadeOutBgm();
+}
+
+// ── Identity Confirmation ──
+
+function onIdentityConfirmationStatus(data) {
+    const countEl = document.getElementById('confirm-count');
+    if (countEl) countEl.textContent = `已確認：${data.confirmed_count}/${data.total_count}`;
+
+    const list = document.getElementById('confirm-player-list');
+    if (list) {
+        list.innerHTML = '';
+        (data.confirmed || []).forEach(p => {
+            const li = document.createElement('li');
+            li.innerHTML = `<span class="confirm-dot confirmed"></span> ${escapeHtml(p.player_name)}`;
+            list.appendChild(li);
+        });
+        (data.pending || []).forEach(p => {
+            const li = document.createElement('li');
+            li.innerHTML = `<span class="confirm-dot pending"></span> ${escapeHtml(p.player_name)}`;
+            list.appendChild(li);
+        });
+    }
+
+    if (data.all_confirmed) {
+        onAllIdentitiesConfirmed();
+    }
+}
+
+function onAllIdentitiesConfirmed() {
+    document.getElementById('btn-next-event').disabled = false;
+    hide('identity-confirm-area');
+    addLog('所有玩家已確認身份，可以開始第一個事件。');
+    showToast('所有玩家已確認身份！');
+}
+
+function forceStartGame() {
+    document.getElementById('btn-next-event').disabled = false;
+    hide('identity-confirm-area');
+    addLog('關主強制開始，跳過身份確認等待。');
 }
 
 // ── Event ──
@@ -226,7 +275,12 @@ function onSilenceCountdown(data) {
 // ── Discussion ──
 
 function startDiscussion() {
-    ws.send({ type: 'start_discussion' });
+    const seconds = parseInt(document.getElementById('select-discussion-time').value, 10);
+    if (seconds === 0) {
+        startVoting();
+        return;
+    }
+    ws.send({ type: 'start_discussion', seconds });
 }
 
 function onDiscussionStart(data) {
