@@ -82,6 +82,9 @@ function onRoomCreated(data) {
     hide('creating-phase');
     show('waiting-phase');
     addLog(`房間已建立：${roomCode}`);
+
+    // 大廳背景音樂（首次互動後解鎖）
+    silentAudio.playBgm();
 }
 
 // ── Player Management ──
@@ -132,6 +135,9 @@ function onGameStarted(data) {
     show('game-phase');
     updateHostView();
     addLog('遊戲開始！角色已分配。');
+
+    // 淡出大廳 BGM
+    silentAudio.fadeOutBgm();
 }
 
 // ── Event ──
@@ -143,6 +149,9 @@ function nextEvent() {
 function onEvent(data) {
     currentEvent = data;
     if (data.host_view) hostView = data.host_view;
+
+    // 事件揭露音樂
+    silentAudio.playEventReveal();
 
     show('host-event-area');
     hide('vote-chart-area');
@@ -521,6 +530,10 @@ function onEnding(data) {
     show('ending-overlay');
     hide('game-phase');
 
+    // 停止其他音樂，播放結尾曲
+    silentAudio.stopAllMusic();
+    silentAudio.playEndingMusic();
+
     silentAudio.init();
     silentAudio.playEndingAmbient();
 
@@ -750,6 +763,20 @@ function updateHostGuidance(text) {
         area.classList.remove('active');
     }
 }
+
+// ── 音頻解鎖（首次使用者互動後） ──
+function unlockHostAudio() {
+    silentAudio.init();
+    silentAudio.unlockAudio();
+    // 若已在等待階段，直接播放 BGM
+    if (!document.getElementById('waiting-phase').classList.contains('hidden')) {
+        silentAudio.playBgm();
+    }
+    document.removeEventListener('click', unlockHostAudio);
+    document.removeEventListener('touchstart', unlockHostAudio);
+}
+document.addEventListener('click', unlockHostAudio, { once: true });
+document.addEventListener('touchstart', unlockHostAudio, { once: true });
 
 // ── Start ──
 init();
