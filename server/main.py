@@ -377,7 +377,7 @@ async def websocket_endpoint(ws: WebSocket):
             elif msg_type == "start_discussion":
                 if role != "host" or not room:
                     continue
-                seconds = data.get("seconds", 120)
+                seconds = msg.get("seconds", 120)
                 room.engine.state.phase = GamePhase.DISCUSSION
                 atmosphere = room.engine.get_waiting_atmosphere("pre_discussion")
                 guidance = room.engine.get_host_guidance(
@@ -495,6 +495,9 @@ async def websocket_endpoint(ws: WebSocket):
                 for pid, pws in room.player_ws.items():
                     pr = result["player_results"].get(pid, {})
                     is_taken = any(t["player_id"] == pid for t in result.get("taken_away", []))
+                    messages = list(pr.get("messages", []))
+                    if result.get("random_incident"):
+                        messages.append(f"📢 {result['random_incident']['narrative']}")
                     await send_json(pws, {
                         "type": "round_result",
                         "social_fear": result["social_fear"],
@@ -502,7 +505,7 @@ async def websocket_endpoint(ws: WebSocket):
                         "your_risk": pr.get("risk", 0),
                         "your_risk_delta": pr.get("risk_delta", 0),
                         "risk_zone": pr.get("risk_zone", "safe"),
-                        "messages": pr.get("messages", []),
+                        "messages": messages,
                         "narrative": pr.get("narrative", ""),
                         "majority_triggered": result.get("majority_triggered", False),
                         "atmosphere_text": result.get("atmosphere_text", ""),
