@@ -142,6 +142,9 @@ function handleMessage(data) {
         case 'game_started':
             onGameStarted(data);
             break;
+        case 'identity_confirmed':
+            onIdentityConfirmed();
+            break;
         case 'event':
             onEvent(data);
             break;
@@ -243,8 +246,109 @@ function onGameStarted(data) {
 
     // 初始化音效
     silentAudio.init();
-    silentAudio.startAmbient(0);
 
+    // 開場敘事流程
+    switchScreen('game-screen-intro');
+    startIntroSequence();
+}
+
+// ── Intro / Role Reveal / Identity Confirm ──
+
+let introTimer = null;
+
+function startIntroSequence() {
+    const lines = document.querySelectorAll('#intro-lines .intro-line');
+    let idx = 0;
+
+    function showNext() {
+        if (idx < lines.length) {
+            lines[idx].classList.add('visible');
+            idx++;
+            introTimer = setTimeout(showNext, idx === 1 ? 800 : 1500);
+        } else {
+            // All lines shown, wait 2s then go to role reveal
+            introTimer = setTimeout(() => {
+                showRoleReveal();
+            }, 2000);
+        }
+    }
+
+    // Reset all lines
+    lines.forEach(l => l.classList.remove('visible'));
+    showNext();
+}
+
+function showRoleReveal() {
+    if (!myRole) return;
+
+    // Fill in role info
+    setText('reveal-role-name', myRole.name);
+    setText('reveal-passive', myRole.passive);
+    setText('reveal-ability', myRole.ability);
+
+    // Hide details and button initially
+    const details = document.getElementById('reveal-details');
+    details.querySelectorAll('.role-detail').forEach(d => d.classList.remove('visible'));
+    const btn = document.getElementById('btn-ready');
+    btn.classList.remove('visible');
+
+    switchScreen('game-screen-role-reveal');
+
+    // Reset flip state
+    const card = document.getElementById('card-flip');
+    card.classList.remove('flipped');
+
+    // Trigger flip after 1s
+    setTimeout(() => {
+        card.classList.add('flipped');
+
+        // Show details after flip completes (0.8s)
+        setTimeout(() => {
+            const roleDetails = details.querySelectorAll('.role-detail');
+            roleDetails[0].classList.add('visible');
+            setTimeout(() => {
+                if (roleDetails[1]) roleDetails[1].classList.add('visible');
+                // Show button
+                setTimeout(() => {
+                    btn.classList.add('visible');
+                }, 300);
+            }, 300);
+        }, 800);
+    }, 1000);
+
+    silentAudio.playEventReveal();
+}
+
+function onReadyClick() {
+    if (!myRole) return;
+
+    // Fill confirm screen
+    setText('confirm-role-name', myRole.name);
+    setText('confirm-passive', myRole.passive);
+    setText('confirm-ability', myRole.ability);
+
+    switchScreen('game-screen-identity-confirm');
+
+    // Reset button state
+    const btn = document.getElementById('btn-confirm-identity');
+    btn.classList.remove('confirmed');
+    btn.textContent = '我已確認身份';
+    btn.disabled = false;
+}
+
+function confirmIdentity() {
+    const btn = document.getElementById('btn-confirm-identity');
+    if (btn.disabled) return;
+
+    btn.disabled = true;
+    btn.classList.add('confirmed');
+    btn.textContent = '等待其他玩家確認...';
+
+    ws.send({ type: 'confirm_identity' });
+}
+
+function onIdentityConfirmed() {
+    silentAudio.startAmbient(0);
     switchScreen('game-screen-waiting');
     setText('waiting-msg', '等待關主開始第一個事件...');
 }
