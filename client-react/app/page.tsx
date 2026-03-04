@@ -34,13 +34,20 @@ function GameUI() {
   const { state } = useGame()
   const [roleOpen, setRoleOpen] = useState(false)
   const [noteOpen, setNoteOpen] = useState(false)
-  const { unlock, playBgm, fadeOutBgm, playEventReveal, playEnding, stopAll } = useAudio()
+  const {
+    unlock, playBgm, fadeOutBgm, playEventReveal, playEnding, stopAll,
+    startHeartbeat, stopHeartbeat,
+    startAmbient, updateAmbientFear, stopAmbient,
+    playVoteClick, playTakenAway, playForeshadowChord,
+    playCoinFlip, playNoteReceived, playEndingAmbient,
+    playIdentityConfirmTone, playDiscussionAmbient, playResultReveal, playWaitingPulse,
+  } = useAudio()
   const prevScreenRef = useRef(state.screen)
+  const prevVotedRef = useRef(state.voted)
 
   // Unlock audio on first user interaction
   const handleFirstInteraction = useCallback(() => {
     unlock()
-    // Try playing BGM if we're on join or lobby
     if (state.screen === 'join' || state.screen === 'lobby') {
       playBgm()
     }
@@ -80,19 +87,85 @@ function GameUI() {
       playEventReveal()
     }
 
+    // Identity confirm → start ambient + confirmation tone
+    if (curr === 'identity-confirm') {
+      startAmbient(state.fearLevel)
+      playIdentityConfirmTone()
+    }
+
     // Event reveal → play event music
     if (curr === 'event') {
       playEventReveal()
     }
-  }, [state.screen, playBgm, fadeOutBgm, playEventReveal])
 
-  // Ending → stop other audio, play ending music
+    // Discussion → stop heartbeat, play discussion cue
+    if (curr === 'discussion') {
+      stopHeartbeat()
+      playDiscussionAmbient()
+    }
+
+    // Result → play result reveal
+    if (curr === 'result') {
+      playResultReveal()
+    }
+
+    // Foreshadow → play foreshadow chord
+    if (curr === 'foreshadow') {
+      playForeshadowChord()
+    }
+
+    // Waiting → play waiting pulse
+    if (curr === 'waiting') {
+      playWaitingPulse()
+    }
+  }, [state.screen, state.fearLevel, playBgm, fadeOutBgm, playEventReveal,
+      startAmbient, playIdentityConfirmTone, stopHeartbeat, playDiscussionAmbient,
+      playResultReveal, playForeshadowChord, playWaitingPulse])
+
+  // Fear level tracking → update ambient drone
+  useEffect(() => {
+    updateAmbientFear(state.fearLevel)
+  }, [state.fearLevel, updateAmbientFear])
+
+  // Silence countdown → heartbeat
+  useEffect(() => {
+    if (state.showSilence) {
+      startHeartbeat(state.silenceSeconds)
+    } else {
+      stopHeartbeat()
+    }
+  }, [state.showSilence, state.silenceSeconds, startHeartbeat, stopHeartbeat])
+
+  // Coin flip overlay → coin flip sound
+  useEffect(() => {
+    if (state.showCoinFlip) playCoinFlip()
+  }, [state.showCoinFlip, playCoinFlip])
+
+  // Taken away overlay → taken away sound
+  useEffect(() => {
+    if (state.isTakenAway) playTakenAway()
+  }, [state.isTakenAway, playTakenAway])
+
+  // Vote confirmed → vote click sound (edge-trigger)
+  useEffect(() => {
+    if (state.voted && !prevVotedRef.current) playVoteClick()
+    prevVotedRef.current = state.voted
+  }, [state.voted, playVoteClick])
+
+  // Note received overlay → note sound
+  useEffect(() => {
+    if (state.showNoteReceived) playNoteReceived()
+  }, [state.showNoteReceived, playNoteReceived])
+
+  // Ending → stop other audio, play ending music + ambient pad
   useEffect(() => {
     if (state.showEnding) {
       stopAll()
+      stopAmbient()
       playEnding()
+      playEndingAmbient()
     }
-  }, [state.showEnding, stopAll, playEnding])
+  }, [state.showEnding, stopAll, stopAmbient, playEnding, playEndingAmbient])
 
   const screenComponent = () => {
     switch (state.screen) {
