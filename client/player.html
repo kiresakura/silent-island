@@ -105,6 +105,69 @@
                     </div>
                 </div>
 
+                <!-- 開場敘事 -->
+                <div id="game-screen-intro" class="game-screen hidden">
+                    <div class="screen-content screen-content-center">
+                        <div class="intro-lines" id="intro-lines">
+                            <p class="intro-line">這座島嶼，曾經是自由的。</p>
+                            <p class="intro-line">直到有一天，沉默成為了生存的方式。</p>
+                            <p class="intro-line">說錯話的人會消失。不說話的人得以苟活。</p>
+                            <p class="intro-line">你是島上的居民之一。<br>你有自己的信念，也有自己的恐懼。</p>
+                            <p class="intro-line">在接下來的六輪事件中，<br>你必須在服從、迴避與抵抗之間做出選擇。</p>
+                            <p class="intro-line">每一次選擇都有代價。沒有人能全身而退。</p>
+                            <p class="intro-line intro-line-final">遊戲開始。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 角色揭示 -->
+                <div id="game-screen-role-reveal" class="game-screen hidden">
+                    <div class="screen-content screen-content-center">
+                        <div class="card-flip-container">
+                            <div class="card-flip" id="card-flip">
+                                <div class="card-face card-back">
+                                    <span class="card-back-text">你 的 身 份</span>
+                                </div>
+                                <div class="card-face card-front">
+                                    <span class="card-front-name" id="reveal-role-name"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="role-details" id="reveal-details">
+                            <div class="role-detail" id="reveal-passive-wrap">
+                                <span class="role-detail-label">被動特質</span>
+                                <p class="role-detail-text" id="reveal-passive"></p>
+                            </div>
+                            <div class="role-detail" id="reveal-ability-wrap">
+                                <span class="role-detail-label">主動能力</span>
+                                <p class="role-detail-text" id="reveal-ability"></p>
+                            </div>
+                        </div>
+                        <button class="btn-ready" id="btn-ready" onclick="onReadyClick()">準備好了</button>
+                    </div>
+                </div>
+
+                <!-- 身份確認 -->
+                <div id="game-screen-identity-confirm" class="game-screen hidden">
+                    <div class="screen-content screen-content-center">
+                        <p class="confirm-hint">請確認你的身份</p>
+                        <div class="confirm-card">
+                            <span class="confirm-role-name" id="confirm-role-name"></span>
+                        </div>
+                        <div class="role-details">
+                            <div class="role-detail">
+                                <span class="role-detail-label">被動特質</span>
+                                <p class="role-detail-text" id="confirm-passive"></p>
+                            </div>
+                            <div class="role-detail">
+                                <span class="role-detail-label">主動能力</span>
+                                <p class="role-detail-text" id="confirm-ability"></p>
+                            </div>
+                        </div>
+                        <button class="confirm-btn" id="btn-confirm-identity" onclick="confirmIdentity()">我已確認身份</button>
+                    </div>
+                </div>
+
                 <!-- 等待畫面 -->
                 <div id="game-screen-waiting" class="game-screen hidden">
                     <div class="screen-content screen-content-center">
